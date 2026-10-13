@@ -12,467 +12,425 @@
 <style>
 *{box-sizing:border-box}
 body{
-  margin:0;font-family:Arial,sans-serif;
-  background:linear-gradient(135deg,#83e8ff,#c9b5ff,#ffe29a);
-  color:#253052;text-align:center;overflow-x:hidden;
+ margin:0;text-align:center;font-family:Arial,sans-serif;color:#253052;
+ background:linear-gradient(135deg,#8ceaff,#d5c3ff,#fff0a8)
 }
-header{padding:12px}
-h1{margin:5px;font-size:clamp(24px,4vw,40px)}
-#top{display:flex;justify-content:center;gap:12px;flex-wrap:wrap}
-.pill{background:white;border-radius:30px;padding:10px 18px;
-font-weight:bold;box-shadow:0 3px 8px #0002}
+header{padding:10px}
+h1{margin:5px;font-size:clamp(23px,4vw,38px)}
+.stats{display:flex;justify-content:center;gap:9px;flex-wrap:wrap}
+.pill{background:white;border-radius:25px;padding:9px 15px;font-weight:bold}
 #question{
-  background:white;border:4px solid #fff;border-radius:22px;
-  max-width:850px;margin:12px auto;padding:15px;
-  font-size:clamp(20px,3vw,30px);font-weight:bold;
-  box-shadow:0 5px 12px #0002;
+ margin:12px auto;max-width:850px;width:94%;padding:15px;
+ background:white;border:4px solid white;border-radius:20px;
+ font-size:clamp(20px,3vw,30px);font-weight:bold
 }
 #game{
-  position:relative;width:min(94vw,900px);height:min(62vh,510px);
-  min-height:350px;margin:0 auto;overflow:hidden;
-  border:5px solid white;border-radius:25px;
-  background:linear-gradient(#92eaff,#d9f8ff 65%,#a7ed9d 65%);
-  box-shadow:0 8px 20px #0002;
+ width:min(94vw,900px);height:min(60vh,500px);min-height:350px;
+ margin:auto;position:relative;overflow:hidden;border:5px solid white;
+ border-radius:25px;
+ background:linear-gradient(#8be7ff 0%,#ddf9ff 67%,#8de17f 67%);
+ box-shadow:0 6px 15px #0002
 }
 #ground{
-  position:absolute;bottom:0;height:25%;width:100%;
-  background:repeating-linear-gradient(90deg,#77d86c 0 40px,#8ae57c 40px 80px);
+ position:absolute;bottom:0;height:25%;width:100%;
+ background:repeating-linear-gradient(90deg,#77d86c 0 40px,#94e986 40px 80px)
 }
 #monster{
-  position:absolute;left:50%;top:49%;transform:translate(-50%,-50%);
-  font-size:clamp(75px,12vw,125px);z-index:2;
-  filter:drop-shadow(0 5px 3px #0002);
+ position:absolute;left:50%;top:40%;transform:translate(-50%,-50%);
+ font-size:clamp(65px,10vw,110px);z-index:3;pointer-events:none;
+ transition:left .07s linear,top .07s linear
 }
 #mouth{
-  position:absolute;left:50%;top:57%;transform:translate(-50%,-50%);
-  width:100px;height:70px;border:4px dashed #ff557a;
-  border-radius:50%;z-index:1;background:#ffcfdd88;
+ position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
+ width:85px;height:65px;border:4px dashed #ff477e;
+ border-radius:50%;background:#ffcfdd88;z-index:2;
+ pointer-events:none;transition:left .07s linear,top .07s linear
 }
 #mouthLabel{
-  position:absolute;left:50%;top:69%;transform:translateX(-50%);
-  font-size:14px;font-weight:bold;background:white;
-  padding:5px 12px;border-radius:20px;z-index:3;
+ position:absolute;left:50%;top:61%;transform:translate(-50%,-50%);
+ background:white;border-radius:15px;padding:5px 9px;
+ font-size:12px;font-weight:bold;white-space:nowrap;z-index:4;
+ pointer-events:none
 }
 .answer{
-  position:absolute;z-index:4;min-width:115px;max-width:42%;
-  padding:12px 15px;border:3px solid white;border-radius:18px;
-  font-size:clamp(15px,2.5vw,22px);font-weight:bold;
-  background:#fff;box-shadow:0 5px 8px #0002;
-  cursor:default;user-select:none;
-  transition:background .15s;
+ position:absolute;z-index:5;padding:12px 14px;min-width:100px;
+ max-width:42%;background:white;border:3px solid #fff;
+ border-radius:18px;font-size:clamp(15px,2.4vw,21px);
+ font-weight:bold;box-shadow:0 4px 8px #0002;
+ user-select:none;pointer-events:none
 }
-.answer.near{background:#fff18a;border-color:#ff8b35;
-transform:scale(1.08)}
-#feedback{font-size:22px;font-weight:bold;min-height:35px;padding:8px}
+.answer.near{
+ background:#fff18a;border-color:#ff8b35;
+ box-shadow:0 0 15px #ff9e31
+}
+#feedback{font-size:20px;font-weight:bold;min-height:35px;padding:9px}
 button{
-  border:0;border-radius:25px;padding:12px 20px;margin:5px;
-  font-size:16px;font-weight:bold;background:#ffcf45;color:#26304d;
-  cursor:pointer;box-shadow:0 3px 5px #0002;
+ border:0;border-radius:25px;padding:12px 18px;margin:5px;
+ background:#ffcf45;color:#253052;font-size:16px;font-weight:bold;
+ cursor:pointer
 }
-button:disabled{opacity:.6}
 #cameraBox{
-  position:fixed;right:10px;bottom:10px;width:155px;
-  border:3px solid white;border-radius:15px;overflow:hidden;
-  background:#222;z-index:10;box-shadow:0 3px 12px #0003;
+ position:fixed;right:10px;top:10px;width:145px;
+ border:3px solid white;border-radius:14px;overflow:hidden;
+ background:#222;z-index:15;box-shadow:0 3px 10px #0003
 }
-#cameraBox video{display:block;width:100%;transform:scaleX(-1)}
-#camStatus{font-size:11px;color:white;padding:4px}
-#startScreen,#resultScreen{
-  position:fixed;inset:0;background:#28315ceF;color:white;
-  display:flex;align-items:center;justify-content:center;
-  z-index:20;padding:20px;
+#camera{width:100%;display:block;transform:scaleX(-1)}
+#camStatus{font-size:11px;color:white;padding:5px}
+.overlay{
+ position:fixed;inset:0;background:#28315cee;z-index:30;
+ display:flex;align-items:center;justify-content:center;padding:18px
 }
-.panel{background:white;color:#253052;border-radius:25px;
-padding:25px;max-width:550px;width:100%;box-shadow:0 8px 30px #0003}
-.panel h2{font-size:30px}
+.panel{
+ width:100%;max-width:520px;background:white;border-radius:25px;
+ padding:25px;color:#253052
+}
+.panel h2{font-size:29px}
 .hidden{display:none!important}
-#resultScore{font-size:42px;font-weight:bold;color:#ed7296}
+#resultScore{font-size:42px;color:#ed7296;font-weight:bold}
 @media(max-width:500px){
- #game{height:53vh;min-height:330px}
- #cameraBox{width:105px;right:5px;bottom:5px}
- .answer{min-width:95px;padding:9px 7px}
- #mouth{width:85px;height:60px}
+ #cameraBox{width:100px;right:5px;top:5px}
+ #game{height:54vh;min-height:330px}
+ #mouth{width:72px;height:56px}
+ .answer{min-width:85px;padding:9px 6px}
 }
 </style>
 </head>
 
 <body>
+
 <header>
-  <h1>🍽️ MARI MAKAN JAWAPAN! 🍽️</h1>
-  <div id="top">
-    <div class="pill">📚 Kata Kerja Tahun 1</div>
-    <div class="pill">⭐ Markah: <span id="score">0</span></div>
-    <div class="pill">Soalan: <span id="number">1</span>/5</div>
-  </div>
+ <h1>👾 MAKAN JAWAPAN! 🍎</h1>
+ <div class="stats">
+  <div class="pill">📚 Kata Kerja Tahun 1</div>
+  <div class="pill">⭐ Markah: <span id="score">0</span></div>
+  <div class="pill">Soalan: <span id="number">1</span>/5</div>
+ </div>
 </header>
 
-<div id="question">Tekan MULA untuk bermain!</div>
+<div id="question">Bersedia untuk bermain?</div>
 
 <div id="game">
-  <div id="ground"></div>
-  <div id="mouth"></div>
-  <div id="monster">👾</div>
-  <div id="mouthLabel">BUKA MULUT DI SINI!</div>
-  <div id="answers"></div>
+ <div id="ground"></div>
+ <div id="monster">👾</div>
+ <div id="mouth"></div>
+ <div id="mouthLabel">😮 BUKA MULUT!</div>
+ <div id="answers"></div>
 </div>
 
-<div id="feedback">Buka mulut apabila jawapan menghampiri mulut watak!</div>
+<div id="feedback">Gerakkan muka untuk mengejar jawapan!</div>
 
 <div>
-  <button id="startBtn">▶ MULA BERMAIN</button>
-  <button id="fullscreenBtn">⛶ SKRIN PENUH</button>
-  <button id="soundBtn">🔊 Bunyi: ON</button>
+ <button id="startBtn">▶ MULA BERMAIN</button>
+ <button id="fullBtn">⛶ SKRIN PENUH</button>
+ <button id="soundBtn">🔊 Bunyi: ON</button>
 </div>
 
 <div id="cameraBox">
-  <video id="camera" playsinline></video>
-  <div id="camStatus">Kamera belum diaktifkan</div>
+ <video id="camera" playsinline></video>
+ <div id="camStatus">Kamera belum aktif</div>
 </div>
 
-<div id="startScreen">
-  <div class="panel">
-    <div style="font-size:65px">👾🍎</div>
-    <h2>Makan Jawapan!</h2>
-    <p>Jawab 5 soalan kata kerja.</p>
-    <p>🎯 Buka mulut apabila pilihan jawapan menghampiri mulut watak.</p>
-    <p>📷 Benarkan akses kamera apabila diminta.</p>
-    <p style="font-size:13px">Gunakan komputer atau telefon dengan kamera dan sambungan Internet.</p>
-    <button id="playBtn">🚀 MULA SEKARANG</button>
-  </div>
+<div id="startScreen" class="overlay">
+ <div class="panel">
+  <div style="font-size:65px">👾🍎</div>
+  <h2>Makan Jawapan!</h2>
+  <p>Jawab 5 soalan kata kerja Tahun 1.</p>
+  <p>↔️ Gerakkan muka untuk mengejar jawapan.</p>
+  <p>😮 Buka mulut untuk makan jawapan.</p>
+  <p>📷 Benarkan akses kamera apabila diminta.</p>
+  <button id="playBtn">🚀 MULA SEKARANG</button>
+ </div>
 </div>
 
-<div id="resultScreen" class="hidden">
-  <div class="panel">
-    <div style="font-size:65px">🏆🎉</div>
-    <h2>TAHNIAH!</h2>
-    <p>Awak telah menamatkan permainan!</p>
-    <div id="resultScore">0 / 5</div>
-    <p id="resultMessage"></p>
-    <button id="againBtn">🔄 MAIN LAGI</button>
-  </div>
+<div id="resultScreen" class="overlay hidden">
+ <div class="panel">
+  <div style="font-size:65px">🏆🎉</div>
+  <h2>TAHNIAH!</h2>
+  <p>Awak sudah tamat bermain!</p>
+  <div id="resultScore">0 / 5</div>
+  <p id="resultMessage"></p>
+  <button id="againBtn">🔄 MAIN LAGI</button>
+ </div>
 </div>
 
 <script>
-/* =====================================
-   GURU BOLEH UBAH SOALAN DI BAWAH INI
-   Setiap soalan mesti ada 4 jawapan.
-   correct ialah indeks jawapan betul:
-   0 = jawapan pertama, 1 = kedua,
-   2 = ketiga, 3 = keempat.
-===================================== */
-const questions = [
- {
-  q:"Ali sedang ____ nasi.",
-  a:["makan","tidur","berlari","menyanyi"],
-  correct:0
- },
- {
-  q:"Siti ____ buku cerita.",
-  a:["mandi","membaca","melompat","menangis"],
-  correct:1
- },
- {
-  q:"Adik ____ bola di padang.",
-  a:["minum","tidur","menendang","menulis"],
-  correct:2
- },
- {
-  q:"Ibu ____ baju yang kotor.",
-  a:["mencuci","menari","makan","berjalan"],
-  correct:0
- },
- {
-  q:"Ayah ____ kereta ke pejabat.",
-  a:["memasak","melukis","berenang","memandu"],
-  correct:3
- }
+/* ===== GURU BOLEH UBAH SOALAN DI SINI ===== */
+const questions=[
+ {q:"Ali sedang ____ nasi.",
+  a:["makan","tidur","berlari","menyanyi"],correct:0},
+ {q:"Siti ____ buku cerita.",
+  a:["mandi","membaca","melompat","menangis"],correct:1},
+ {q:"Adik ____ bola di padang.",
+  a:["minum","tidur","menendang","menulis"],correct:2},
+ {q:"Ibu ____ baju yang kotor.",
+  a:["mencuci","menari","makan","berjalan"],correct:0},
+ {q:"Ayah ____ kereta ke pejabat.",
+  a:["memasak","melukis","berenang","memandu"],correct:3}
 ];
 
-const video = document.getElementById("camera");
-const camStatus = document.getElementById("camStatus");
-const questionEl = document.getElementById("question");
-const answersEl = document.getElementById("answers");
-const scoreEl = document.getElementById("score");
-const numberEl = document.getElementById("number");
-const feedback = document.getElementById("feedback");
-const monster = document.getElementById("monster");
-const mouth = document.getElementById("mouth");
+const video=document.getElementById("camera");
+const game=document.getElementById("game");
+const monster=document.getElementById("monster");
+const mouth=document.getElementById("mouth");
+const mouthLabel=document.getElementById("mouthLabel");
+const answersEl=document.getElementById("answers");
+const questionEl=document.getElementById("question");
+const feedback=document.getElementById("feedback");
+const camStatus=document.getElementById("camStatus");
 
-let score = 0;
-let index = 0;
-let active = false;
-let mouthOpen = false;
-let previousMouthOpen = false;
-let busy = false;
-let soundOn = true;
-let faceMesh = null;
-let cameraStarted = false;
-let audioContext = null;
-let lastMouthEvent = 0;
-let lastFrame = 0;
-let animationId = null;
-let items = [];
-let roundToken = 0;
+let score=0,index=0,active=false,busy=false;
+let soundOn=true,cameraStarted=false;
+let faceMesh=null,cameraObject=null;
+let faceX=50,faceY=48,faceSeen=false;
+let mouthOpen=false,previousMouthOpen=false;
+let items=[],animationId=null,lastFrame=0,token=0;
 
 function beep(freq=650,duration=.12){
-  if(!soundOn)return;
-  try{
-    audioContext ||= new (window.AudioContext||window.webkitAudioContext)();
-    if(audioContext.state==="suspended")audioContext.resume();
-    const osc=audioContext.createOscillator();
-    const gain=audioContext.createGain();
-    osc.frequency.value=freq;
-    gain.gain.value=.08;
-    osc.connect(gain);gain.connect(audioContext.destination);
-    osc.start();
-    gain.gain.exponentialRampToValueAtTime(.001,audioContext.currentTime+duration);
-    osc.stop(audioContext.currentTime+duration);
-  }catch(e){}
+ if(!soundOn)return;
+ try{
+  const AC=window.AudioContext||window.webkitAudioContext;
+  window.audioCtx ||= new AC();
+  const ctx=window.audioCtx;
+  if(ctx.state==="suspended")ctx.resume();
+  const osc=ctx.createOscillator(),gain=ctx.createGain();
+  osc.frequency.value=freq;gain.gain.value=.07;
+  osc.connect(gain);gain.connect(ctx.destination);
+  osc.start();
+  gain.gain.exponentialRampToValueAtTime(.001,ctx.currentTime+duration);
+  osc.stop(ctx.currentTime+duration);
+ }catch(e){}
 }
 
 function speak(text){
-  if(!soundOn || !("speechSynthesis" in window))return;
-  speechSynthesis.cancel();
-  const utterance=new SpeechSynthesisUtterance(text);
-  utterance.lang="ms-MY";
-  utterance.rate=.85;
-  speechSynthesis.speak(utterance);
+ if(!soundOn||!window.speechSynthesis)return;
+ speechSynthesis.cancel();
+ const u=new SpeechSynthesisUtterance(text);
+ u.lang="ms-MY";u.rate=.9;
+ speechSynthesis.speak(u);
 }
 
 function shuffle(arr){
-  return arr.map(v=>({v,sort:Math.random()}))
-    .sort((a,b)=>a.sort-b.sort).map(x=>x.v);
+ return arr.map(v=>({v,sort:Math.random()}))
+ .sort((a,b)=>a.sort-b.sort).map(o=>o.v);
 }
 
 function setQuestion(){
-  if(index>=questions.length){finishGame();return;}
-  busy=false;
-  roundToken++;
-  items=[];
-  answersEl.innerHTML="";
-  const q=questions[index];
-  questionEl.textContent=q.q;
-  numberEl.textContent=index+1;
-  feedback.textContent="😋 Buka mulut untuk makan jawapan!";
-  monster.textContent="👾";
-  mouth.style.background="#ffcfdd88";
+ if(index>=questions.length){finishGame();return;}
+ token++;
+ busy=false;
+ items=[];
+ answersEl.innerHTML="";
+ const q=questions[index];
+ questionEl.textContent=q.q;
+ document.getElementById("number").textContent=index+1;
+ feedback.textContent="Cari jawapan yang betul!";
+ monster.textContent="👾";
+ mouth.style.background="#ffcfdd88";
 
-  const shuffled=shuffle(q.a.map((text,originalIndex)=>({
-    text,
-    correct:originalIndex===q.correct
-  })));
+ const positions=[[7,9],[66,9],[7,76],[66,76]];
+ const shuffled=shuffle(q.a.map((text,i)=>({
+  text,correct:i===q.correct
+ })));
 
-  // Jawapan bermula di empat penjuru dan bergerak ke arah mulut.
-  const positions=[
-    [8,8],[64,8],[8,76],[64,76]
-  ];
-
-  shuffled.forEach((obj,i)=>{
-    const el=document.createElement("div");
-    el.className="answer";
-    el.textContent=obj.text;
-    answersEl.appendChild(el);
-    const p=positions[i];
-    items.push({
-      el,text:obj.text,correct:obj.correct,
-      x:p[0],y:p[1],
-      speed:.035+Math.random()*.025,
-      phase:Math.random()*Math.PI*2,
-      eaten:false
-    });
-    el.style.left=p[0]+"%";
-    el.style.top=p[1]+"%";
+ shuffled.forEach((obj,i)=>{
+  const el=document.createElement("div");
+  el.className="answer";
+  el.textContent=obj.text;
+  answersEl.appendChild(el);
+  items.push({
+   el,text:obj.text,correct:obj.correct,
+   x:positions[i][0],y:positions[i][1],
+   phase:Math.random()*6,
+   eaten:false
   });
-  speak("Soalan "+(index+1)+". "+q.q);
+ });
+ speak("Soalan "+(index+1)+". "+q.q);
+}
+
+function updateFacePosition(){
+ // Kawal watak dengan lokasi muka dalam imej kamera.
+ const rect=game.getBoundingClientRect();
+ const x=faceX/100*rect.width;
+ const y=faceY/100*rect.height;
+
+ monster.style.left=(x/rect.width*100)+"%";
+ monster.style.top=((y-rect.height*.085)/rect.height*100)+"%";
+ mouth.style.left=(x/rect.width*100)+"%";
+ mouth.style.top=(y/rect.height*100)+"%";
+ mouthLabel.style.left=(x/rect.width*100)+"%";
+ mouthLabel.style.top=((y+rect.height*.105)/rect.height*100)+"%";
 }
 
 function animate(timestamp){
-  animationId=requestAnimationFrame(animate);
-  if(!active || busy)return;
-  if(timestamp-lastFrame<25)return;
-  lastFrame=timestamp;
+ animationId=requestAnimationFrame(animate);
+ if(!active||busy)return;
+ if(timestamp-lastFrame<25)return;
+ lastFrame=timestamp;
 
-  const gameRect=document.getElementById("game").getBoundingClientRect();
-  const targetX=gameRect.width*.5;
-  const targetY=gameRect.height*.57;
+ const gr=game.getBoundingClientRect();
+ const mr=mouth.getBoundingClientRect();
 
-  items.forEach(item=>{
-    if(item.eaten)return;
-    const el=item.el;
-    const w=el.offsetWidth,h=el.offsetHeight;
+ items.forEach(item=>{
+  if(item.eaten)return;
 
-    // Bergerak perlahan menuju kawasan mulut.
-    const cx=item.x/100*gameRect.width+w/2;
-    const cy=item.y/100*gameRect.height+h/2;
-    const dx=targetX-cx,dy=targetY-cy;
-    const dist=Math.hypot(dx,dy)||1;
-    item.x+=dx/dist*item.speed;
-    item.y+=dy/dist*item.speed;
-    item.phase+=.04;
-    item.y+=Math.sin(item.phase)*.025;
+  // Jawapan berlegar di kawasan permainan.
+  item.phase+=.025;
+  const floatX=Math.sin(item.phase)*1.2;
+  const floatY=Math.cos(item.phase*1.3)*1.2;
+  item.el.style.left=(item.x+floatX)+"%";
+  item.el.style.top=(item.y+floatY)+"%";
 
-    // Elakkan jawapan daripada keluar dari kawasan permainan.
-    item.x=Math.max(0,Math.min(100-w/gameRect.width*100,item.x));
-    item.y=Math.max(0,Math.min(100-h/gameRect.height*100,item.y));
-    el.style.left=item.x+"%";
-    el.style.top=item.y+"%";
+  const r=item.el.getBoundingClientRect();
+  const ax=r.left+r.width/2,ay=r.top+r.height/2;
+  const mx=mr.left+mr.width/2,my=mr.top+mr.height/2;
+  const d=Math.hypot(ax-mx,ay-my);
 
-    const r=el.getBoundingClientRect();
-    const mr=mouth.getBoundingClientRect();
-    const ax=r.left+r.width/2,ay=r.top+r.height/2;
-    const mx=mr.left+mr.width/2,my=mr.top+mr.height/2;
-    const d=Math.hypot(ax-mx,ay-my);
-    el.classList.toggle("near",d<95);
+  // Jawapan menyala apabila muka menghampirinya.
+  item.el.classList.toggle("near",d<85);
 
-    // Buka mulut hanya akan memakan jawapan yang cukup dekat.
-    if(mouthOpen && d<95 && !busy){
-      eatAnswer(item);
-    }
-  });
+  // Mesti dekat dengan jawapan DAN mulut terbuka.
+  if(mouthOpen&&d<60&&!busy){
+   eatAnswer(item);
+  }
+ });
 }
 
 function eatAnswer(item){
-  if(busy||item.eaten)return;
-  busy=true;
-  item.eaten=true;
-  const token=roundToken;
-  item.el.style.transform="scale(1.7)";
-  item.el.style.opacity="0";
-  monster.textContent="😮";
-  mouth.style.background="#ff668c";
-  beep(850,.15);
+ if(busy||item.eaten)return;
+ busy=true;
+ item.eaten=true;
+ const currentToken=token;
+ item.el.style.transform="scale(1.7)";
+ item.el.style.opacity="0";
+ monster.textContent="😮";
+ mouth.style.background="#ff668c";
 
-  if(item.correct){
-    score++;
-    scoreEl.textContent=score;
-    feedback.textContent="🎉 BETUL! Sedapnya!";
-    beep(1050,.2);
-    speak("Betul! Bagus!");
-  }else{
-    feedback.textContent="🙈 Belum betul! Cuba soalan seterusnya.";
-    beep(220,.3);
-    speak("Belum betul. Teruskan mencuba.");
-  }
+ if(item.correct){
+  score++;
+  document.getElementById("score").textContent=score;
+  feedback.textContent="🎉 BETUL! Sedapnya!";
+  beep(950,.18);
+  speak("Betul! Bagus!");
+ }else{
+  feedback.textContent="🙈 Belum betul! Teruskan mencuba.";
+  beep(250,.25);
+  speak("Belum betul. Cuba lagi!");
+ }
 
-  setTimeout(()=>{
-    if(token!==roundToken)return;
-    index++;
-    if(index>=questions.length){
-      finishGame();
-    }else{
-      setQuestion();
-    }
-  },1400);
+ setTimeout(()=>{
+  if(currentToken!==token)return;
+  index++;
+  if(index>=questions.length)finishGame();
+  else setQuestion();
+ },1300);
 }
 
 function finishGame(){
-  active=false;
-  busy=false;
-  if(animationId)cancelAnimationFrame(animationId);
-  document.getElementById("resultScore").textContent=score+" / "+questions.length;
-  const msg=score===5?"Hebat! Semua jawapan betul!":
-    score>=3?"Bagus! Teruskan berlatih kata kerja!":
-    "Bagus kerana mencuba! Jom belajar dan main lagi!";
-  document.getElementById("resultMessage").textContent=msg;
-  document.getElementById("resultScreen").classList.remove("hidden");
-  speak("Permainan tamat. Markah kamu "+score+" daripada lima.");
+ active=false;busy=false;
+ document.getElementById("resultScore").textContent=score+" / 5";
+ document.getElementById("resultMessage").textContent=
+  score===5?"Hebat! Semua jawapan betul!":
+  score>=3?"Bagus! Terus berlatih kata kerja!":
+  "Terima kasih kerana mencuba! Jom main lagi!";
+ document.getElementById("resultScreen").classList.remove("hidden");
+ speak("Permainan tamat. Markah kamu "+score+" daripada lima.");
 }
 
-async function startFaceCamera(){
-  if(cameraStarted)return true;
-  if(!navigator.mediaDevices?.getUserMedia){
-    camStatus.textContent="Kamera tidak disokong";
-    return false;
-  }
-  try{
-    faceMesh=new FaceMesh({
-      locateFile:(file)=>"https://cdn.jsdelivr.net/npm/@mediapipe/face_mesh/"+file
-    });
-    faceMesh.setOptions({
-      maxNumFaces:1,
-      refineLandmarks:true,
-      minDetectionConfidence:.5,
-      minTrackingConfidence:.5
-    });
-    faceMesh.onResults(results=>{
-      const faces=results.multiFaceLandmarks;
-      if(!faces || !faces.length){
-        camStatus.textContent="Wajah tidak dikesan";
-        mouthOpen=false;
-        return;
-      }
+async function startCamera(){
+ if(cameraStarted)return true;
+ if(!navigator.mediaDevices||!navigator.mediaDevices.getUserMedia){
+  alert("Kamera memerlukan laman HTTPS dan pelayar yang menyokong kamera.");
+  return false;
+ }
+ try{
+  faceMesh=new FaceMesh({
+   locateFile:file=>"https://cdn.jsdelivr.net/npm/@mediapipe/face_mesh/"+file
+  });
+  faceMesh.setOptions({
+   maxNumFaces:1,
+   refineLandmarks:true,
+   minDetectionConfidence:.5,
+   minTrackingConfidence:.5
+  });
 
-      const lm=faces[0];
-      // Titik bibir atas dan bawah MediaPipe Face Mesh.
-      const upper=lm[13];
-      const lower=lm[14];
-      const left=lm[61];
-      const right=lm[291];
-      const gap=Math.hypot(upper.x-lower.x,upper.y-lower.y);
-      const width=Math.hypot(left.x-right.x,left.y-right.y);
-      const ratio=gap/(width||.001);
+  faceMesh.onResults(results=>{
+   const faces=results.multiFaceLandmarks;
+   if(!faces||!faces.length){
+    faceSeen=false;mouthOpen=false;
+    camStatus.textContent="Wajah tidak dikesan";
+    return;
+   }
 
-      // Ambang boleh diubah jika mulut sukar dikesan.
-      mouthOpen=ratio>.23;
-      camStatus.textContent=mouthOpen?"😮 Mulut terbuka!":"😊 Kamera aktif";
-      monster.textContent=mouthOpen?"😮":"👾";
+   const lm=faces[0];
 
-      // Aktif hanya pada perubahan mulut tertutup -> terbuka.
-      const now=Date.now();
-      if(mouthOpen && !previousMouthOpen && now-lastMouthEvent>500){
-        lastMouthEvent=now;
-      }
-      previousMouthOpen=mouthOpen;
-    });
+   // Gunakan titik tengah wajah untuk mengawal watak.
+   // Paparan kamera dicerminkan supaya kawalan terasa semula jadi.
+   faceX=Math.max(8,Math.min(92,(1-lm[1].x)*100));
+   faceY=Math.max(20,Math.min(70,lm[1].y*100));
+   faceSeen=true;
+   updateFacePosition();
 
-    const camera=new Camera(video,{
-      onFrame:async()=>{await faceMesh.send({image:video});},
-      width:640,height:480
-    });
-    await camera.start();
-    cameraStarted=true;
-    camStatus.textContent="Kamera aktif";
-    return true;
-  }catch(err){
-    console.error(err);
-    camStatus.textContent="Gagal akses kamera";
-    alert("Kamera tidak dapat diaktifkan. Benarkan akses kamera dan pastikan laman menggunakan HTTPS.");
-    return false;
-  }
+   // Ukur bukaan bibir berbanding lebar mulut.
+   const upper=lm[13],lower=lm[14];
+   const left=lm[61],right=lm[291];
+   const gap=Math.hypot(upper.x-lower.x,upper.y-lower.y);
+   const width=Math.hypot(left.x-right.x,left.y-right.y);
+   const ratio=gap/(width||.001);
+
+   mouthOpen=ratio>.23;
+   monster.textContent=mouthOpen?"😮":"👾";
+   camStatus.textContent=mouthOpen?"😮 Mulut terbuka!":"😊 Kamera aktif";
+   mouth.style.background=mouthOpen?"#ff9dbb":"#ffcfdd88";
+   previousMouthOpen=mouthOpen;
+  });
+
+  cameraObject=new Camera(video,{
+   onFrame:async()=>{await faceMesh.send({image:video});},
+   width:640,height:480
+  });
+  await cameraObject.start();
+  cameraStarted=true;
+  camStatus.textContent="Kamera aktif";
+  return true;
+ }catch(err){
+  console.error(err);
+  camStatus.textContent="Kamera gagal";
+  alert("Tidak dapat mengaktifkan kamera. Semak kebenaran kamera.");
+  return false;
+ }
 }
 
 async function startGame(){
-  document.getElementById("startScreen").classList.add("hidden");
-  document.getElementById("resultScreen").classList.add("hidden");
-  document.getElementById("playBtn").disabled=true;
-  const ok=await startFaceCamera();
-  document.getElementById("playBtn").disabled=false;
-  if(!ok){
-    document.getElementById("startScreen").classList.remove("hidden");
-    return;
-  }
-  score=0;index=0;active=true;busy=false;
-  scoreEl.textContent=score;
-  setQuestion();
-  if(!animationId)animate(0);
+ document.getElementById("playBtn").disabled=true;
+ const ok=await startCamera();
+ document.getElementById("playBtn").disabled=false;
+ if(!ok)return;
+
+ document.getElementById("startScreen").classList.add("hidden");
+ document.getElementById("resultScreen").classList.add("hidden");
+ score=0;index=0;busy=false;active=true;
+ document.getElementById("score").textContent=0;
+ setQuestion();
+ if(!animationId)animate(0);
 }
 
 document.getElementById("playBtn").addEventListener("click",startGame);
 document.getElementById("startBtn").addEventListener("click",()=>{
-  document.getElementById("startScreen").classList.remove("hidden");
+ document.getElementById("startScreen").classList.remove("hidden");
 });
 document.getElementById("againBtn").addEventListener("click",startGame);
 
-document.getElementById("fullscreenBtn").addEventListener("click",async()=>{
-  try{
-    if(!document.fullscreenElement)await document.documentElement.requestFullscreen();
-    else await document.exitFullscreen();
-  }catch(e){alert("Skrin penuh tidak disokong oleh pelayar ini.");}
+document.getElementById("fullBtn").addEventListener("click",async()=>{
+ try{
+  if(!document.fullscreenElement)await document.documentElement.requestFullscreen();
+  else await document.exitFullscreen();
+ }catch(e){}
 });
 
 document.getElementById("soundBtn").addEventListener("click",()=>{
-  soundOn=!soundOn;
-  document.getElementById("soundBtn").textContent=soundOn?"🔊 Bunyi: ON":"🔇 Bunyi: OFF";
+ soundOn=!soundOn;
+ document.getElementById("soundBtn").textContent=
+ soundOn?"🔊 Bunyi: ON":"🔇 Bunyi: OFF";
 });
 </script>
 </body>
